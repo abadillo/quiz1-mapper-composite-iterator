@@ -1,1 +1,3 @@
-* **npm start** para ejecutar
+
+1. **npm i** para instalar las dependencias
+2. **npm start** para ejecutar
