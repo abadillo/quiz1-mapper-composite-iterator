@@ -1,0 +1,69 @@
+interface Iteratorr<T> {
+    next(): T;
+    hasNext(): boolean;
+}
+
+interface Aggregate<T> {
+    // addItem(item: T): void;
+    getIterator(): Iteratorr<T>;
+}
+
+class RegularWordsIterator implements Iteratorr<String> {
+    private position: number;
+    private collection: WordsCollection;
+
+    constructor(collection: WordsCollection) {
+        this.collection = collection;
+        this.position = -1;
+    }
+
+    hasNext(): boolean {
+        return this.position < collection.getCount() - 1;
+    }
+
+    next(): String {
+        this.position = this.position + 1;
+        return this.collection.getItems()[this.position];
+    }
+}
+
+class WordsCollection implements Aggregate<String> {
+    private items: String[] = [];
+
+    public getIterator(): Iteratorr<String> {
+        return new RegularWordsIterator(this);
+    }
+
+    public getCount(): number {
+        return this.items.length;
+    }
+
+    public getItems(): String[] {
+        return this.items;
+    }
+
+    public addItem(item: String): void {
+        this.items.push(item);
+    }
+}
+
+const collection = new WordsCollection();
+collection.addItem('First');
+collection.addItem('Second');
+collection.addItem('Third');
+
+console.log(collection);
+
+const iterator = collection.getIterator();
+
+console.log('Regular traversal:');
+while (iterator.hasNext()) {
+    console.log(iterator.next());
+}
+
+// console.log('');
+// console.log('Reverse traversal:');
+// const reverseIterator = collection.getReverseIterator();
+// while (reverseIterator.valid()) {
+//     console.log(reverseIterator.next());
+// }

@@ -1,0 +1,143 @@
+// interface Iterador<A> {
+//     next(): A;
+//     hasNext(): boolean;
+// }
+
+// interface Aggregate<A> {
+//     // addItem(item: number): void;
+//     getIterator(): Iterador<A>;
+// }
+
+interface Component {
+    execute(funcion: Funcion): void;
+}
+
+// class CompositeIterator implements Iterador<Component> {
+//     //
+//     composite: Composite;
+//     position: number;
+
+//     constructor(c: Composite) {
+//         this.composite = c;
+//         this.position = -1;
+//     }
+
+//     next(): Composite {
+//         this.position = this.position + 1;
+//         return this.composite.getChildren();
+//     }
+
+//     hasNext(): boolean {
+//         return this.composite.countChildren() > 0 ? true : false;
+//     }
+// }
+
+class Leaf implements Component {
+    //
+    id: number;
+
+    constructor(id: number) {
+        this.id = id;
+    }
+
+    getId(): number {
+        return this.id;
+    }
+
+    execute(funcion: Funcion): void {
+        this.id = funcion.aplicarFuncion(this.id);
+        console.log(this.id);
+    }
+}
+
+class Composite implements Component {
+    //
+
+    // iterator: Iterador<Composite>;
+
+    id: number;
+    children: Component[] = [];
+
+    constructor(id: number) {
+        this.id = id;
+        // this.iterator = new CompositeIterator(this);
+    }
+
+    getId(): number {
+        return this.id;
+    }
+
+    execute(funcion: Funcion): void {
+        this.id = funcion.aplicarFuncion(this.id);
+        console.log(this.id);
+
+        this.children.forEach((c) => {
+            c.execute(funcion);
+        });
+    }
+
+    add(c: Component) {
+        this.children.push(c);
+    }
+
+    remove(c: Component) {
+        // this.children.
+    }
+
+    getChildren(): Component[] {
+        return this.children;
+    }
+
+    // getIterator(): Iterador<Composite> {
+    //     return this.iterator;
+    // }
+}
+
+let nodo1: Composite = new Composite(10);
+let nodo2: Composite = new Composite(20);
+let nodo3: Composite = new Composite(30);
+let nodo4: Composite = new Composite(40);
+let nodo5: Composite = new Composite(50);
+let nodo6: Composite = new Composite(60);
+let nodo7: Composite = new Composite(70);
+
+let hoja1: Leaf = new Leaf(1);
+let hoja2: Leaf = new Leaf(2);
+let hoja3: Leaf = new Leaf(3);
+let hoja4: Leaf = new Leaf(4);
+let hoja5: Leaf = new Leaf(5);
+let hoja6: Leaf = new Leaf(6);
+
+// arbol
+nodo1.add(nodo2);
+nodo2.add(hoja1);
+nodo2.add(hoja2);
+
+nodo1.add(nodo3);
+nodo3.add(nodo4);
+nodo4.add(hoja3);
+nodo4.add(nodo5);
+nodo5.add(hoja4);
+nodo5.add(hoja5);
+
+interface Funcion {
+    aplicarFuncion(n: number): number;
+}
+class FuncionPotencia2 implements Funcion {
+    aplicarFuncion(n: number): number {
+        return n * n;
+    }
+}
+
+class FuncionMult100 implements Funcion {
+    aplicarFuncion(n: number): number {
+        return n * 100;
+    }
+}
+
+// console.log(nodo1.countChildren());
+
+let nodoF1 = nodo1;
+let nodoF2 = nodo1;
+// nodoF1.execute(new FuncionPotencia2());
+nodoF2.execute(new FuncionMult100());

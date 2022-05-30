@@ -1,0 +1,122 @@
+// interface Iterador<A> {
+//     next(): A;
+//     hasNext(): boolean;
+// }
+
+// interface Aggregate<A> {
+//     // addItem(item: T): void;
+//     getIterator(): Iterador<A>;
+// }
+
+interface Component<T> {
+    execute(): void;
+}
+
+// class CompositeIterator<T> implements Iterador<Component<T>> {
+//     //
+//     composite: Composite<T>;
+//     position: number;
+
+//     constructor(c: Composite<T>) {
+//         this.composite = c;
+//         this.position = -1;
+//     }
+
+//     next(): Composite<T> {
+//         this.position = this.position + 1;
+//         return this.composite.getChildren();
+//     }
+
+//     hasNext(): boolean {
+//         return this.composite.countChildren() > 0 ? true : false;
+//     }
+// }
+
+class Leaf<T> implements Component<T> {
+    //
+    id: T;
+
+    constructor(id: T) {
+        this.id = id;
+    }
+
+    getId(): T {
+        return this.id;
+    }
+
+    execute(): void {
+        console.log(this.id);
+    }
+}
+
+class Composite<T> implements Component<T> {
+    //
+
+    // iterator: Iterador<Composite<T>>;
+
+    id: T;
+    children: Component<T>[] = [];
+
+    constructor(id: T) {
+        this.id = id;
+        // this.iterator = new CompositeIterator<T>(this);
+    }
+
+    getId(): T {
+        return this.id;
+    }
+
+    execute(): void {
+        console.log(this.id);
+
+        this.children.forEach((c) => {
+            c.execute();
+        });
+    }
+
+    add(c: Component<T>) {
+        this.children.push(c);
+    }
+
+    remove(c: Component<T>) {
+        // this.children.
+    }
+
+    getChildren(): Component<T>[] {
+        return this.children;
+    }
+
+    // getIterator(): Iterador<Composite<T>> {
+    //     return this.iterator;
+    // }
+}
+
+let nodo1: Composite<String> = new Composite('n1');
+let nodo2: Composite<String> = new Composite('n2');
+let nodo3: Composite<String> = new Composite('n3');
+let nodo4: Composite<String> = new Composite('n4');
+let nodo5: Composite<String> = new Composite('n5');
+let nodo6: Composite<String> = new Composite('n6');
+let nodo7: Composite<String> = new Composite('n7');
+
+let hoja1: Leaf<String> = new Leaf('l1');
+let hoja2: Leaf<String> = new Leaf('l2');
+let hoja3: Leaf<String> = new Leaf('l3');
+let hoja4: Leaf<String> = new Leaf('l4');
+let hoja5: Leaf<String> = new Leaf('l5');
+let hoja6: Leaf<String> = new Leaf('l6');
+
+// arbol
+nodo1.add(nodo2);
+nodo2.add(hoja1);
+nodo2.add(hoja2);
+
+nodo1.add(nodo3);
+nodo3.add(nodo4);
+nodo4.add(hoja3);
+nodo4.add(nodo5);
+nodo5.add(hoja4);
+nodo5.add(hoja5);
+
+// console.log(nodo1.countChildren());
+nodo1.execute();
